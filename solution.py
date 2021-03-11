@@ -10,6 +10,8 @@ for i in range(N):
 antennas = []
 for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
+print(buildings)
+print(antennas)
 
 def antennasRanking(antennas):
     antennasRank = []
@@ -57,8 +59,26 @@ def buildingAntennaScore(building, antenna):
 def generateSolution(position, ):
     print("GE")
 
-def getNeighbours(solution):
-    pass
+def getNeighbours(solution,W,H):
+    # where solution is just a pair of coordinates
+    x = solution[0]
+    y = solution[1]
+    neighbours = []
+    if (x<W):
+        neighbours = neighbours+[x+1,y]
+    if (x > 0):
+        neighbours = neighbours+[x-1,y]
+    if (y < H):
+        neighbours = neighbours+[x,y+1]
+    if y > 0:
+        neighbours = neighbours+[x,y-1]
+    return neighbours
+
+def getBestNeighbour(building,antenna,neighbours):
+    score = buildingAntennaScore(building,antenna)
+    bestNeighbour = neighbours[0]
+    for n in neighbours:
+        pass
 
 def hillclimbing(building, antenna):
     # for optimization
@@ -77,6 +97,7 @@ def output(antenna):
     # antennas = [id,x,y]
     outname = filename[0]+'out.txt'
     f = open(outname,'w')
+    f.writelines(str(len(antenna)))
     for i in antenna:
         line = ' '.join(str(e) for e in i)
         line = line + "\n"
