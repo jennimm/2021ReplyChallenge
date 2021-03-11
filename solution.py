@@ -14,8 +14,6 @@ for i in range (len(buildings)):
 antennas = []
 for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
-print(buildings)
-print(antennas)
 
 def antennasRanking(antennas):
     antennasRank = []
@@ -67,7 +65,7 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         if x == 0: 
             buildingId = int(buildingsPlaced[0][0][2:])
         else:
-            print(noAllocatedAntenna[0][0][2:])
+            # print(noAllocatedAntenna[0][0][2:])
             buildingId = int(noAllocatedAntenna[0][0][2:])
         if len(buildingsPlaced) == 0:
             for j in range(len(noAllocatedAntenna)):
@@ -94,8 +92,6 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         solution.append(positionArray)
     return solution
 
-
-
 def getNeighbours(solution,W,H):
     # where solution is just a pair of coordinates
     x = solution[0]
@@ -119,7 +115,10 @@ def getBestNeighbour(building,antenna,neighbours):
 
 def hillclimbing(building, antenna):
     # for optimization
-    currentsolution = generateSolution()
+    rankOfAntennas = antennasRanking(antennas)
+    rankOfBuildings = buildingRanking(buildings)
+    adjacentBuildings = findAdjBuildings(buildings)
+    currentsolution = generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings)
     currentscore = buildingAntennaScore(building,antenna)
     neighbours = getNeighbours(currentsolution)
     bestNeighbour, bestNeighbourscore = getBestNeighbour(building,antenna, neighbours)
@@ -132,9 +131,10 @@ def hillclimbing(building, antenna):
 
 def output(antenna):
     # antennas = [id,x,y]
-    outname = filename[0]+'out.txt'
+    pos =  filename.find('.')
+    outname = filename[:pos]+'.out'
     f = open(outname,'w')
-    f.writelines(str(len(antenna)))
+    f.writelines(str(len(antenna))+"\n")
     for i in antenna:
         line = ' '.join(str(e) for e in i)
         line = line + "\n"
@@ -144,10 +144,7 @@ def output(antenna):
 rankOfAntennas = antennasRanking(antennas)
 rankOfBuildings = buildingRanking(buildings)
 adjacentBuildings = findAdjBuildings(buildings)
-print(antennas)
-print(buildings)
-print(rankOfBuildings)
-print(adjacentBuildings)
-print(generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings))
 
+sol = (generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings))
+output(sol)
     
