@@ -34,10 +34,11 @@ def buildingRanking(buildings):
 def findAdjBuildings(buildings):
     buildings_adj=[]
     for j in range(len(buildings)):
+        #random = iter(buildings)
         x=buildings[j][0]
         y=buildings[j][1]
         building=[buildings[j][4]]
-        for k in range(len(buildings)):
+        for k in range(j, len(buildings)):
             if j != k and (x-2) >= 0 and (x+2) <= W and (y-2) >= 0 and (y+2) <= H :
                 if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
                     if buildings[k][4] != building[0]:
