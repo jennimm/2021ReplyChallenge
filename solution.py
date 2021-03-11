@@ -6,11 +6,20 @@ data = open(filename,'r')
 W,H = (int(x) for x in data.readline().split())
 N,M,R = (int(x) for x in data.readline().split())
 buildings = []
+plan = []
+for x in range(H):
+    width = []
+    for y in range(W):
+        width.append("*")
+    plan.append(width)
+
 for i in range(N):
     buildings.append([int(x) for x in data.readline().split()])
 for i in range (len(buildings)):
     id_build='id'+str(i)
     buildings[i].append(id_build)
+    plan[buildings[i][0]][buildings[i][1]] = id_build
+    
 antennas = []
 for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
@@ -31,19 +40,38 @@ def buildingRanking(buildings):
     buidlingRank.sort(key = lambda x:x[1], reverse=True)
     return buidlingRank
 
-def findAdjBuildings(buildings):
+def findAdjBuilding(buildings):
     buildings_adj=[]
     for j in range(len(buildings)):
         #random = iter(buildings)
         x=buildings[j][0]
         y=buildings[j][1]
         building=[buildings[j][4]]
-        for k in range(j, len(buildings)):
-            if j != k and (x-2) >= 0 and (x+2) <= W and (y-2) >= 0 and (y+2) <= H :
+        for k in range(j+1, len(buildings)):
+            if (x-2) >= 0 and (x+2) <= W and (y-2) >= 0 and (y+2) <= H :
                 if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
                     if buildings[k][4] != building[0]:
                         building.append(buildings[k][4])
                 buildings_adj.append(building)
+    return buildings_adj
+
+def findNext(x,y, plan):
+    nextTo = []
+    for i in range(3):
+        if plan[x-i][y] != '*':
+            nextTo.append(plan[x-i][y])
+        if plan[x][y-i] != '*':
+            nextTo.append(plan[x][y-i])
+    return nextTo
+def findAdjBuildings(buildings, W, H, plan):
+    buildings_adj=[]
+    for j in range(H):
+        x=buildings[j][0]
+        y=buildings[j][1]
+        building=[buildings[j][4]]
+        for k in range(W):
+            adj = findNext(j,k,plan)
+        buildings_adj.append([building, adj])
     return buildings_adj
 
 def distanceBetween(x, y):
@@ -196,7 +224,7 @@ def output(antenna):
 
 rankOfAntennas = antennasRanking(antennas)
 rankOfBuildings = buildingRanking(buildings)
-adjacentBuildings = findAdjBuildings(buildings)
+adjacentBuildings = findAdjBuildings(buildings,W, H, plan)
 
 sol = (generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings))
 output(sol)
