@@ -38,11 +38,12 @@ def findAdjBuildings(buildings):
         y=buildings[j][1]
         building=[]
         building.append(buildings[j][4])
-        for k in buildings:
-            if (x-2) <= k[0] <= (x+2) or (y-2) <= k[1] <= (y+2):
-                if k[4] != building[0]:
-                    building.append(k[4])
-        buildings_adj.append(building)
+        for k in (len(buildings)):
+            if j != k:
+                if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
+                    if buildings[k][4] != building[0]:
+                        building.append(buildings[k][4])
+                buildings_adj.append(building)
     return buildings_adj
 
 def distanceBetween(x, y):
