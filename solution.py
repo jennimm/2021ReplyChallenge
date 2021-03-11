@@ -1,4 +1,5 @@
 import numpy
+from copy import deepcopy
 
 filename = 'data_scenarios_a_example.in'
 data = open(filename,'r')
@@ -7,6 +8,9 @@ N,M,R = (int(x) for x in data.readline().split())
 buildings = []
 for i in range(N):
     buildings.append([int(x) for x in data.readline().split()])
+for i in range (len(buildings)):
+    id_build='id'+str(i)
+    buildings[i].append(id_build)
 antennas = []
 for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
@@ -25,14 +29,11 @@ def buildingRanking(buildings):
     buidlingRank = []
     for x in range(len(buildings)):
         score = buildings[x][2]
-        buidlingRank.append([x, score])
+        buidlingRank.append([buildings[x][-1], score])
     buidlingRank.sort(key = lambda x:x[1], reverse=True)
     return buidlingRank
 
 def findAdjBuildings(buildings):
-    for i in range (len(buildings)):
-        id_build='id'+str(i)
-        buildings[i].append(id_build)
     buildings_adj=[]
     for j in range (len(buildings)):
         x=buildings[j][0]
@@ -56,8 +57,44 @@ def buildingAntennaScore(building, antenna):
     score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
     return score
 
-def generateSolution(position, ):
-    print("GE")
+def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
+    buildingsPlaced = deepcopy(rankOfBuildings)
+    noAllocatedAntenna = []
+    solution = []
+    idsPlaced = []
+    x = 0
+    while x < len(rankOfAntennas):
+        if x == 0: 
+            buildingId = int(buildingsPlaced[0][0][2:])
+        else:
+            print(noAllocatedAntenna[0][0][2:])
+            buildingId = int(noAllocatedAntenna[0][0][2:])
+        if len(buildingsPlaced) == 0:
+            for j in range(len(noAllocatedAntenna)):
+                if j not in idsPlaced:
+                    buildingsPlaced.append(noAllocatedAntenna[j])
+        
+        xPos = buildingsPlaced[0][0]
+        rankOfAntennas[x].append(xPos)
+        y = 0
+        while y < len(buildingsPlaced):
+            if buildingsPlaced[y][0] in adjacentBuildings[buildingId]:
+                if y != buildingId:
+                    noAllocatedAntenna.append(buildingsPlaced[y])
+                else:
+                    idsPlaced.append(buildingId)
+                del buildingsPlaced[y]
+                y -= 1
+            y += 1
+        positionArray = []
+        positionArray.append(rankOfAntennas[x][0])
+        positionArray.append(buildings[int(rankOfAntennas[x][-1][2:])][0])
+        positionArray.append(buildings[int(rankOfAntennas[x][-1][2:])][1])
+        x += 1
+        solution.append(positionArray)
+    return solution
+
+
 
 def getNeighbours(solution,W,H):
     # where solution is just a pair of coordinates
@@ -109,6 +146,8 @@ rankOfBuildings = buildingRanking(buildings)
 adjacentBuildings = findAdjBuildings(buildings)
 print(antennas)
 print(buildings)
-
+print(rankOfBuildings)
+print(adjacentBuildings)
+print(generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings))
 
     
