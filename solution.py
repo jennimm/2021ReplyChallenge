@@ -1,7 +1,7 @@
 import numpy
 from copy import deepcopy
 
-filename = 'data_scenarios_a_example.in'
+filename = 'data_scenarios_c_metropolis.in'
 data = open(filename,'r')
 W,H = (int(x) for x in data.readline().split())
 N,M,R = (int(x) for x in data.readline().split())
@@ -37,21 +37,12 @@ def findAdjBuildings(buildings):
         x=buildings[j][0]
         y=buildings[j][1]
         building=[buildings[j][4]]
-<<<<<<< Updated upstream
-        for k in (j+1, len(buildings)):
-            #if j != k:
-            if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
-                if buildings[k][4] != building[0]:
-                    building.append(buildings[k][4])
-            buildings_adj.append(building)
-=======
-        for k in (len(buildings)):
+        for k in range(len(buildings)):
             if j != k and (x-2) >= 0 and (x+2) <= W and (y-2) >= 0 and (y+2) <= H :
                 if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
                     if buildings[k][4] != building[0]:
                         building.append(buildings[k][4])
                 buildings_adj.append(building)
->>>>>>> Stashed changes
     return buildings_adj
 
 def distanceBetween(x, y):
