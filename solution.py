@@ -36,8 +36,7 @@ def findAdjBuildings(buildings):
     for j in range (len(buildings)):
         x=buildings[j][0]
         y=buildings[j][1]
-        building=[]
-        building.append(buildings[j][4])
+        building=[buildings[j][4]]
         for k in (len(buildings)):
             if j != k:
                 if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
