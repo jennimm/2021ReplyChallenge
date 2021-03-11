@@ -36,11 +36,11 @@ def findAdjBuildings(buildings):
         x=buildings[j][0]
         y=buildings[j][1]
         building=[]
-        building.append(buildings[j][3])
+        building.append(buildings[j][4])
         for k in buildings:
             if (x-2) <= k[0] <= (x+2) or (y-2) <= k[1] <= (y+2):
-                if k[3] != building[0]:
-                    building.append(k[3])
+                if k[4] != building[0]:
+                    building.append(k[4])
         buildings_adj.append(building)
     return buildings_adj
 
@@ -57,9 +57,24 @@ def buildingAntennaScore(building, antenna):
 def generateSolution():
     pass
 
-def hillclimbing():
-    # for optimization
+
+def getNeighbours(solution):
     pass
+
+def hillclimbing(building,antenna):
+    # for optimization
+    currentsolution = generateSolution()
+    currentscore = buildingAntennaScore(building,antenna)
+    neighbours = getNeighbours(currentsolution)
+    bestNeighbour, bestNeighbourscore = getBestNeighbour(building,antenna, neighbours)
+
+    while bestNeighbourscore < currentscore:
+        currentsolution= bestNeighbour
+        currentscore = bestNeighbourLength
+        neighbours = getNeighbours(currentsolution)
+        bestNeighbour,bestNeighbourscore = getBestNeighbour(building,antenna,neighbours)
+
+    return currentscore,currentsolution
 
 def output(antenna):
     # antennas = [id,x,y]
