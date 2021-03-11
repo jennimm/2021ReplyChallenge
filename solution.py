@@ -18,4 +18,16 @@ antennasRank.sort(key = lambda x:x[1], reverse=True)
 
 print(antennasRank)
 
+buildings_adj=[]
+for j in range (len(buildings)):
+    x=buildings[j][0]
+    y=buildings[j][1]
+    building=[]
+    building.append(buildings[j][4])
+    for k in buildings:
+        if (x-2) <= k[0] <= (x+2) or (y-2) <= k[1] <= (y+2):
+            if k[4] != building[0]:
+                building.append(k[4])
+    buildings_adj.append(building)
     
+print(buildings_adj)
