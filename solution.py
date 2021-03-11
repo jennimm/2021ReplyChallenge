@@ -33,16 +33,16 @@ def buildingRanking(buildings):
 
 def findAdjBuildings(buildings):
     buildings_adj=[]
-    for j in range (len(buildings)):
+    for j in range(len(buildings)):
         x=buildings[j][0]
         y=buildings[j][1]
         building=[buildings[j][4]]
-        for k in (len(buildings)):
-            if j != k:
-                if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
-                    if buildings[k][4] != building[0]:
-                        building.append(buildings[k][4])
-                buildings_adj.append(building)
+        for k in (j+1, len(buildings)):
+            #if j != k:
+            if (x-2) <= buildings[k][0] <= (x+2) or (y-2) <= buildings[k][1] <= (y+2):
+                if buildings[k][4] != building[0]:
+                    building.append(buildings[k][4])
+            buildings_adj.append(building)
     return buildings_adj
 
 def distanceBetween(x, y):
