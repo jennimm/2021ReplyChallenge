@@ -53,3 +53,16 @@ def buildingAntennaScore(building, antenna):
     antennaPos = numpy.array(antenna[2], antenna[3])
     score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
     return score
+
+def output(antenna):
+    # antennas = [id,x,y]
+    outname = filename[0]+'out.txt'
+    f = open(outname,'w')
+    for i in antenna:
+        line = ' '.join(str(e) for e in i)
+        line = line + "\n"
+        f.writelines(line)
+    f.close()
+
+
+    
