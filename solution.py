@@ -55,26 +55,26 @@ def findAdjBuilding(buildings):
                 buildings_adj.append(building)
     return buildings_adj
 
-def findNext(x,y, plan):
+def findNext(y,x, plan):
     nextTo = []
     
     for i in range(3):
-        if 0 < y-i < H-1:
+        if 0 < x < H-1:
             if plan[y-i][x] != '*':
                 nextTo.append(plan[x-i][y])
-        if 0 < x-i < W-1:
+        if 0 < y < W-1:
             if plan[y-1][x-i] != '*':
                 nextTo.append(plan[x][y-i])
     return nextTo
 
 def findAdjBuildings(buildings, W, H, plan):
     buildings_adj=[]
-    for j in range(W):
+    for j in range(len(buildings)):
         x=buildings[j][0]
         y=buildings[j][1]
         building=buildings[j][4]
-        for k in range(H):
-            adj = findNext(k,j,plan)
+        #for k in range(len(buildings)):
+        adj = findNext(x,y,plan)
         if adj == []:
             array = [building]
         else:
