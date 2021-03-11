@@ -10,7 +10,6 @@ for i in range(N):
 antennas = []
 for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
-print(W,H,N,M,R,buildings,antennas)
 
 def antennasRanking(antennas):
     antennasRank = []
@@ -40,8 +39,6 @@ def findAdjBuildings(buildings):
                 if k[3] != building[0]:
                     building.append(k[3])
         buildings_adj.append(building)
-    
-    print(buildings_adj)
     return buildings_adj
 
 def distanceBetween(x, y):
@@ -53,6 +50,13 @@ def buildingAntennaScore(building, antenna):
     antennaPos = numpy.array(antenna[2], antenna[3])
     score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
     return score
+
+def generateSolution():
+    pass
+
+def hillclimbing():
+    # for optimization
+    pass
 
 def output(antenna):
     # antennas = [id,x,y]
