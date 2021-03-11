@@ -12,27 +12,37 @@ for i in range(M):
     antennas.append([int(x) for x in data.readline().split()])
 print(W,H,N,M,R,buildings,antennas)
 
-antennasRank = []
-for x in range(len(antennas)):
-    score = (antennas[x][0] + antennas[x][1]) // 2
-    antennasRank.append([x, score])
-antennasRank.sort(key = lambda x:x[1], reverse=True)
+def antennasRanking(antennas):
+    antennasRank = []
+    for x in range(len(antennas)):
+        score = (antennas[x][0] + antennas[x][1]) // 2
+        antennasRank.append([x, score])
+    antennasRank.sort(key = lambda x:x[1], reverse=True)
+    return antennasRank
 
-print(antennasRank)
+def buildingRanking(buildings):
+    buidlingRank = []
+    for x in range(len(buildings)):
+        score = buildings[x][2]
+        buidlingRank.append([x, score])
+    buidlingRank.sort(key = lambda x:x[1], reverse=True)
+    return buidlingRank
 
-buildings_adj=[]
-for j in range (len(buildings)):
-    x=buildings[j][0]
-    y=buildings[j][1]
-    building=[]
-    building.append(buildings[j][4])
-    for k in buildings:
-        if (x-2) <= k[0] <= (x+2) or (y-2) <= k[1] <= (y+2):
-            if k[4] != building[0]:
-                building.append(k[4])
-    buildings_adj.append(building)
+def findAdjBuildings(buildings):
+    buildings_adj=[]
+    for j in range (len(buildings)):
+        x=buildings[j][0]
+        y=buildings[j][1]
+        building=[]
+        building.append(buildings[j][4])
+        for k in buildings:
+            if (x-2) <= k[0] <= (x+2) or (y-2) <= k[1] <= (y+2):
+                if k[4] != building[0]:
+                    building.append(k[4])
+        buildings_adj.append(building)
     
-print(buildings_adj)
+    print(buildings_adj)
+    return buildings_adj
 
 def distanceBetween(x, y):
     return numpy.abs(x-y).sum()
