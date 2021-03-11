@@ -55,21 +55,21 @@ def buildingAntennaScore(building, antenna):
     score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
     return score
 
-def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
+def generateSolutio(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
     buildingsPlaced = deepcopy(rankOfBuildings)
     noAllocatedAntenna = []
     solution = []
     idsPlaced = []
     x = 0
     while x < len(rankOfAntennas):
-        if x == 0: 
-            buildingId = int(buildingsPlaced[0][0][2:])
-        else:
-            buildingId = int(noAllocatedAntenna[0][0][2:])
-        if len(buildingsPlaced) == 0:
-            for j in range(len(noAllocatedAntenna)):
-                if j not in idsPlaced:
-                    buildingsPlaced.append(noAllocatedAntenna[j])
+        #if x == 0:
+        buildingId = int(buildingsPlaced[0][0][2:])
+        #else:
+            #buildingId = int(noAllocatedAntenna[0][0][2:])
+        # if len(buildingsPlaced) == 0:
+        #     for j in range(len(noAllocatedAntenna)):
+        #         if j not in idsPlaced:
+        #             buildingsPlaced.append(noAllocatedAntenna[j])
         
         xPos = buildingsPlaced[0][0]
         rankOfAntennas[x].append(xPos)
@@ -77,10 +77,11 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         while y < len(buildingsPlaced):
             if buildingsPlaced[y][0] in adjacentBuildings[buildingId]:
                 if int(buildingsPlaced[y][0][2:]) != buildingId:
-                    noAllocatedAntenna.append(buildingsPlaced[y])
+                   # noAllocatedAntenna.append(buildingsPlaced[y])
+                   pass
                 else:
                     idsPlaced.append(buildingId)
-                del buildingsPlaced[y]
+                #del buildingsPlaced[y]
                 y -= 1
             y += 1
         positionArray = []
@@ -88,6 +89,58 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         positionArray.append(buildings[int(rankOfAntennas[x][-1][2:])][0])
         positionArray.append(buildings[int(rankOfAntennas[x][-1][2:])][1])
         x += 1
+        solution.append(positionArray)
+    return solution
+
+def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
+    buildingsPlaced = deepcopy(rankOfBuildings)
+    noAllocatedAntenna = []
+    solution = []
+    ignore = []
+    idsPlaced = []
+    for x in range(len(rankOfAntennas)):
+        #if x == 0:
+        idFound = False
+        p = 0
+        while idFound == False:
+            if p not in idsPlaced and p not in ignore:
+                buildingId = p
+                idFound = True
+            else:
+                p += 1
+                if p == len(buildingsPlaced):
+                    ignore = []
+                    p = 0
+            #buildingId = int(buildingsPlaced[0][0][2:])
+        #else:
+            #buildingId = int(noAllocatedAntenna[0][0][2:])
+        # if len(buildingsPlaced) == 0:
+        #     for j in range(len(noAllocatedAntenna)):
+        #         if j not in idsPlaced:
+        #             buildingsPlaced.append(noAllocatedAntenna[j])
+        
+        #xPos = buildingsPlaced[0][0]
+        rankOfAntennas[x].append(buildingId)
+        ignore = adjacentBuildings[buildingId]
+        del ignore[0]
+        idsPlaced.append(buildingId)
+        # y = 0
+        # while y < len(buildingsPlaced):
+        #     if buildingsPlaced[y][0] in adjacentBuildings[buildingId]:
+        #         if int(buildingsPlaced[y][0][2:]) != buildingId:
+        #            # noAllocatedAntenna.append(buildingsPlaced[y])
+        #            ignore.append(int(buildingsPlaced[y][0][2:]))
+        #            pass
+        #         else:
+        #             idsPlaced.append(buildingId)
+        #         #del buildingsPlaced[y]
+        #         y -= 1
+        #     y += 1
+        positionArray = []
+        positionArray.append(rankOfAntennas[x][0])
+        positionArray.append(buildings[rankOfAntennas[x][-1]][0])
+        positionArray.append(buildings[rankOfAntennas[x][-1]][1])
+        
         solution.append(positionArray)
     return solution
 
