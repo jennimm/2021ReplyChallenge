@@ -28,6 +28,9 @@ def buildingRanking(buildings):
     return buidlingRank
 
 def findAdjBuildings(buildings):
+    for i in range (len(buildings)):
+        id_build='id'+str(i)
+        buildings[i].append(id_build)
     buildings_adj=[]
     for j in range (len(buildings)):
         x=buildings[j][0]
