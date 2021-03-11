@@ -1,3 +1,5 @@
+import numpy
+
 filename = 'data_scenarios_a_example.in'
 data = open(filename,'r')
 W,H = (int(x) for x in data.readline().split())
@@ -31,3 +33,13 @@ for j in range (len(buildings)):
     buildings_adj.append(building)
     
 print(buildings_adj)
+
+def distanceBetween(x, y):
+    return numpy.abs(x-y).sum()
+
+def buildingAntennaScore(building, antenna):
+    #check the index is correct
+    buildingPos = numpy.array(building[1], building[2])
+    antennaPos = numpy.array(antenna[2], antenna[3])
+    score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
+    return score
