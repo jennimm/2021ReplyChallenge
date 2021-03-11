@@ -7,9 +7,9 @@ W,H = (int(x) for x in data.readline().split())
 N,M,R = (int(x) for x in data.readline().split())
 buildings = []
 plan = []
-for x in range(H):
+for x in range(W):
     width = []
-    for y in range(W):
+    for y in range(H):
         width.append("*")
     plan.append(width)
 
@@ -57,21 +57,31 @@ def findAdjBuilding(buildings):
 
 def findNext(x,y, plan):
     nextTo = []
+    
     for i in range(3):
-        if plan[x-i][y] != '*':
-            nextTo.append(plan[x-i][y])
-        if plan[x][y-i] != '*':
-            nextTo.append(plan[x][y-i])
+        if 0 < y-i < H-1:
+            if plan[y-i][x] != '*':
+                nextTo.append(plan[x-i][y])
+        if 0 < x-i < W-1:
+            if plan[y-1][x-i] != '*':
+                nextTo.append(plan[x][y-i])
     return nextTo
+
 def findAdjBuildings(buildings, W, H, plan):
     buildings_adj=[]
-    for j in range(H):
+    for j in range(W):
         x=buildings[j][0]
         y=buildings[j][1]
-        building=[buildings[j][4]]
-        for k in range(W):
-            adj = findNext(j,k,plan)
-        buildings_adj.append([building, adj])
+        building=buildings[j][4]
+        for k in range(H):
+            adj = findNext(k,j,plan)
+        if adj == []:
+            array = [building]
+        else:
+            adj = "".join(adj)
+            array = [building, adj]
+        #buildings_adj.append(building)
+        buildings_adj.append(array)
     return buildings_adj
 
 def distanceBetween(x, y):
@@ -121,7 +131,15 @@ def generateSolutio(position, rankOfAntennas, rankOfBuildings, adjacentBuildings
         solution.append(positionArray)
     return solution
 
-def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
+def findCoords(ids, W, H, plan):
+    for x in range(W):
+        for y in range(H):
+            if plan[x][y] == ids:
+                return [x,y]
+    else:
+        return []
+
+def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings, W, H, plan):
     buildingsPlaced = deepcopy(rankOfBuildings)
     noAllocatedAntenna = []
     solution = []
@@ -132,7 +150,7 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         idFound = False
         p = 0
         while idFound == False:
-            if p not in idsPlaced and p not in ignore:
+            if p not in idsPlaced and ("id"+str(p)) not in ignore:
                 buildingId = p
                 idFound = True
             else:
@@ -140,31 +158,16 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
                 if p == len(buildingsPlaced):
                     ignore = []
                     p = 0
-            #buildingId = int(buildingsPlaced[0][0][2:])
-        #else:
-            #buildingId = int(noAllocatedAntenna[0][0][2:])
-        # if len(buildingsPlaced) == 0:
-        #     for j in range(len(noAllocatedAntenna)):
-        #         if j not in idsPlaced:
-        #             buildingsPlaced.append(noAllocatedAntenna[j])
-        
-        #xPos = buildingsPlaced[0][0]
+
         rankOfAntennas[x].append(buildingId)
-        ignore = adjacentBuildings[buildingId]
-        del ignore[0]
+        #ignore = adjacentBuildings[buildingId]
+        coord = findCoords("id"+str(buildingId), W, H, plan)
+        if coord != []:
+            ignore = plan[coord[0]][coord[1]]
+        else:
+            ignore = []
+        #del ignore[0]
         idsPlaced.append(buildingId)
-        # y = 0
-        # while y < len(buildingsPlaced):
-        #     if buildingsPlaced[y][0] in adjacentBuildings[buildingId]:
-        #         if int(buildingsPlaced[y][0][2:]) != buildingId:
-        #            # noAllocatedAntenna.append(buildingsPlaced[y])
-        #            ignore.append(int(buildingsPlaced[y][0][2:]))
-        #            pass
-        #         else:
-        #             idsPlaced.append(buildingId)
-        #         #del buildingsPlaced[y]
-        #         y -= 1
-        #     y += 1
         positionArray = []
         positionArray.append(rankOfAntennas[x][0])
         positionArray.append(buildings[rankOfAntennas[x][-1]][0])
@@ -226,6 +229,6 @@ rankOfAntennas = antennasRanking(antennas)
 rankOfBuildings = buildingRanking(buildings)
 adjacentBuildings = findAdjBuildings(buildings,W, H, plan)
 
-sol = (generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings))
+sol = (generateSolution(0, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings, W, H, plan))
 output(sol)
     
