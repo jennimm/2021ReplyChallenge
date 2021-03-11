@@ -65,7 +65,6 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         if x == 0: 
             buildingId = int(buildingsPlaced[0][0][2:])
         else:
-            # print(noAllocatedAntenna[0][0][2:])
             buildingId = int(noAllocatedAntenna[0][0][2:])
         if len(buildingsPlaced) == 0:
             for j in range(len(noAllocatedAntenna)):
@@ -77,7 +76,7 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
         y = 0
         while y < len(buildingsPlaced):
             if buildingsPlaced[y][0] in adjacentBuildings[buildingId]:
-                if y != buildingId:
+                if int(buildingsPlaced[y][0][2:]) != buildingId:
                     noAllocatedAntenna.append(buildingsPlaced[y])
                 else:
                     idsPlaced.append(buildingId)
