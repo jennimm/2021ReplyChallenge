@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-filename = 'data_scenarios_c_metropolis.in'
+filename = 'data_scenarios_b_mumbai.in'
 data = open(filename,'r')
 W,H = (int(x) for x in data.readline().split())
 N,M,R = (int(x) for x in data.readline().split())
@@ -74,16 +74,11 @@ def findCoords(ids):
 def generateSolution(position, rankOfAntennas, rankOfBuildings):
     buildingsPlaced = deepcopy(rankOfBuildings)
     solution = []
-    idsPlaced = []
     for x in range(len(rankOfAntennas)):
         buildingId = buildingsPlaced[x][0]
         rankOfAntennas[x].append(buildingId)
         coord = findCoords(buildingId)
-        idsPlaced.append(buildingId)
-        positionArray = []
-        positionArray.append(rankOfAntennas[x][0])
-        positionArray.append(coord[0])
-        positionArray.append(coord[1])
+        positionArray = [rankOfAntennas[x][0],coord[0],coord[1]]
         solution.append(positionArray)
     return solution
 
