@@ -1,7 +1,7 @@
 import numpy
 from copy import deepcopy
 
-filename = 'data_scenarios_c_metropolis.in'
+filename = 'data_scenarios_f_tokyo.in'
 data = open(filename,'r')
 W,H = (int(x) for x in data.readline().split())
 N,M,R = (int(x) for x in data.readline().split())
@@ -129,6 +129,8 @@ def generateSolutio(position, rankOfAntennas, rankOfBuildings, adjacentBuildings
         positionArray.append(buildings[int(rankOfAntennas[x][-1][2:])][1])
         x += 1
         solution.append(positionArray)
+        if x > 10:
+            x = len(rankOfAntennas)
     return solution
 
 def findCoords(ids, W, H, plan):
@@ -166,6 +168,9 @@ def generateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuilding
             ignore = plan[coord[0]][coord[1]]
         else:
             ignore = []
+        if p > 2500:
+            x = len(rankOfAntennas)
+            break
         #del ignore[0]
         idsPlaced.append(buildingId)
         positionArray = []
