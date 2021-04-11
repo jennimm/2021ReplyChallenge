@@ -94,7 +94,7 @@ def buildingAntennaScore(building, antenna):
     score = ( building[-1] * antenna[-1] ) - (building[3] * distanceBetween(buildingPos, antennaPos))
     return score
 
-def generateSolutio(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
+def basicGenerateSolution(position, rankOfAntennas, rankOfBuildings, adjacentBuildings, buildings):
     buildingsPlaced = deepcopy(rankOfBuildings)
     noAllocatedAntenna = []
     solution = []
